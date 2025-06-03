@@ -1,58 +1,62 @@
-# AbletonMCP - Ableton Live Model Context Protocol Integration
+# AbletonMCP - Ableton Live 模型上下文协议集成中文教程
 [![smithery badge](https://smithery.ai/badge/@ahujasid/ableton-mcp)](https://smithery.ai/server/@ahujasid/ableton-mcp)
 
-AbletonMCP connects Ableton Live to Claude AI through the Model Context Protocol (MCP), allowing Claude to directly interact with and control Ableton Live. This integration enables prompt-assisted music production, track creation, and Live session manipulation.
+AbletonMCP 通过模型上下文协议（MCP）将 Ableton Live 与 Claude AI 连接，使 Claude 能够直接与 Ableton Live 交互和控制。此集成支持通过提示辅助音乐制作、音轨创建和 Live 会话操作。
 
-### Join the Community
+### 加入社区
+MCP官方社群：
+提供反馈、获取灵感并在 MCP 基础上构建：[Discord](https://discord.gg/3ZrMyGKnaU)。由 [Siddharth](https://x.com/sidahuj) 制作
 
-Give feedback, get inspired, and build on top of the MCP: [Discord](https://discord.gg/3ZrMyGKnaU). Made by [Siddharth](https://x.com/sidahuj)
+我的微信：Hersen_GT   (音乐人，非程序员)
+## 功能
 
-## Features
+- **双向通信**：通过基于套接字的服务器将 Claude AI 连接到 Ableton Live
+- **音轨操作**：创建、修改和操作 MIDI 和音频音轨
+- **乐器和效果选择**：Claude 可以从 Ableton 库中访问和加载合适的乐器、效果和声音
+- **片段创建**：创建和编辑带有音符的 MIDI 片段
+- **会话控制**：启动和停止播放、触发片段以及控制传输
 
-- **Two-way communication**: Connect Claude AI to Ableton Live through a socket-based server
-- **Track manipulation**: Create, modify, and manipulate MIDI and audio tracks
-- **Instrument and effect selection**: Claude can access and load the right instruments, effects and sounds from Ableton's library
-- **Clip creation**: Create and edit MIDI clips with notes
-- **Session control**: Start and stop playback, fire clips, and control transport
+## 组件
 
-## Components
+系统包括两个主要组件：
 
-The system consists of two main components:
+1. **Ableton 远程脚本** (`Ableton_Remote_Script/__init__.py`)：用于 Ableton Live 的 MIDI 远程脚本，创建套接字服务器以接收和执行命令
+2. **MCP 服务器** (`server.py`)：实现模型上下文协议并连接到 Ableton 远程脚本的 Python 服务器
 
-1. **Ableton Remote Script** (`Ableton_Remote_Script/__init__.py`): A MIDI Remote Script for Ableton Live that creates a socket server to receive and execute commands
-2. **MCP Server** (`server.py`): A Python server that implements the Model Context Protocol and connects to the Ableton Remote Script
+## 安装
 
-## Installation
+### 通过 Smithery 安装
 
-### Installing via Smithery
-
-To install Ableton Live Integration for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@ahujasid/ableton-mcp):
+通过 [Smithery](https://smithery.ai/server/@ahujasid/ableton-mcp) 自动安装 Claude Desktop 的 Ableton Live 集成：
+1.在Mac终端（terminal）下运行下面的代码
 
 ```bash
 npx -y @smithery/cli install @ahujasid/ableton-mcp --client claude
 ```
 
-### Prerequisites
+### 前提条件
 
-- Ableton Live 10 or newer
-- Python 3.8 or newer
-- [uv package manager](https://astral.sh/uv)
+- Ableton Live 10 或更高版本
+- Python 3.8 或更高版本
+- [uv 包管理器](https://astral.sh/uv)
 
-If you're on Mac, please install uv as:
+如果使用 Mac，请按以下方式安装 uv：
+（安装上面步骤的时候会自动安装，为了不出错，可以再运行一次下方代码）
+
 ```
 brew install uv
 ```
 
-Otherwise, install from [uv's official website][https://docs.astral.sh/uv/getting-started/installation/]
+否则，请从 [uv 官方网站](https://docs.astral.sh/uv/getting-started/installation/) 安装
 
-⚠️ Do not proceed before installing UV
+⚠️ 在安装 UV 之前不要继续下面步骤
 
-### Claude for Desktop Integration
+### Claude for Desktop 集成
 
-[Follow along with the setup instructions video](https://youtu.be/iJWJqyVuPS8)
+[观看设置说明视频](https://youtu.be/iJWJqyVuPS8)
 
-1. Go to Claude > Settings > Developer > Edit Config > claude_desktop_config.json to include the following:
-
+1. 转到 Claude > setting > Developer > Edit Config > claude_desktop_config.json，添加以下内容：
+   
 ```json
 {
     "mcpServers": {
@@ -66,112 +70,111 @@ Otherwise, install from [uv's official website][https://docs.astral.sh/uv/gettin
 }
 ```
 
-### Cursor Integration
+### Cursor 集成
 
-Run ableton-mcp without installing it permanently through uvx. Go to Cursor Settings > MCP and paste this as a command:
+通过 uvx 运行 ableton-mcp，无需永久安装。转到 Cursor 设置 > MCP，粘贴以下命令：
 
 ```
 uvx ableton-mcp
 ```
 
-⚠️ Only run one instance of the MCP server (either on Cursor or Claude Desktop), not both
+⚠️ 一次仅运行一个 MCP 服务器实例（在 Cursor 或 Claude Desktop 上），不要同时运行两者
 
-### Installing the Ableton Remote Script
+### 安装 Ableton 远程脚本
 
-[Follow along with the setup instructions video](https://youtu.be/iJWJqyVuPS8)
+[观看设置说明视频](https://youtu.be/iJWJqyVuPS8)
 
-1. Download the `AbletonMCP_Remote_Script/__init__.py` file from this repo
+1. 从此仓库下载 `AbletonMCP_Remote_Script/__init__.py` 文件
 
-2. Copy the folder to Ableton's MIDI Remote Scripts directory. Different OS and versions have different locations. **One of these should work, you might have to look**:
+2. 将文件夹复制到 Ableton 的 MIDI 远程脚本目录。不同操作系统和版本的路径不同。**以下路径之一应该有效，可能需要查找**：
 
-   **For macOS:**
-   - Method 1: Go to Applications > Right-click on Ableton Live app → Show Package Contents → Navigate to:
+   **对于 macOS：**
+   - 方法 1：转到应用程序 > 右键单击 Ableton Live 应用 → 显示包内容 → 导航至：
      `Contents/App-Resources/MIDI Remote Scripts/`
-   - Method 2: If it's not there in the first method, use the direct path (replace XX with your version number):
+   - 方法 2：如果第一种方法无效，使用直接路径（将 XX 替换为您的版本号）：
      `/Users/[Username]/Library/Preferences/Ableton/Live XX/User Remote Scripts`
    
-   **For Windows:**
-   - Method 1:
-     C:\Users\[Username]\AppData\Roaming\Ableton\Live x.x.x\Preferences\User Remote Scripts 
-   - Method 2:
+   **对于 Windows：**
+   - 方法 1：
+     `C:\Users\[Username]\AppData\Roaming\Ableton\Live x.x.x\Preferences\User Remote Scripts`
+   - 方法 2：
      `C:\ProgramData\Ableton\Live XX\Resources\MIDI Remote Scripts\`
-   - Method 3:
+   - 方法 3：
      `C:\Program Files\Ableton\Live XX\Resources\MIDI Remote Scripts\`
-   *Note: Replace XX with your Ableton version number (e.g., 10, 11, 12)*
+   *注意：将 XX 替换为您的 Ableton 版本号（例如，10、11、12）*
 
-4. Create a folder called 'AbletonMCP' in the Remote Scripts directory and paste the downloaded '\_\_init\_\_.py' file
+4. 在远程脚本目录中创建一个名为 'AbletonMCP' 的文件夹，并将下载的 '__init__.py' 文件粘贴进去
 
-3. Launch Ableton Live
+3. 启动 Ableton Live
 
-4. Go to Settings/Preferences → Link, Tempo & MIDI
+4. 转到设置/偏好设置 → 链接、速度和 MIDI
 
-5. In the Control Surface dropdown, select "AbletonMCP"
+5. 在控制表面下拉菜单中选择 "AbletonMCP"
 
-6. Set Input and Output to "None"
+6. 将输入和输出设置为“无”
 
-## Usage
+## 使用
 
-### Starting the Connection
+### 启动连接
 
-1. Ensure the Ableton Remote Script is loaded in Ableton Live
-2. Make sure the MCP server is configured in Claude Desktop or Cursor
-3. The connection should be established automatically when you interact with Claude
+1. 确保 Ableton Live 中已加载 Ableton 远程脚本
+2. 确保在 Claude Desktop 或 Cursor 中配置了 MCP 服务器
+3. 当您与 Claude 交互时，连接应自动建立
 
-### Using with Claude
+### 与 Claude 一起使用
 
-Once the config file has been set on Claude, and the remote script is running in Ableton, you will see a hammer icon with tools for the Ableton MCP.
+在 Claude 上设置好配置文件并在 Ableton 中运行远程脚本后，您将看到一个带有 Ableton MCP 工具的锤子图标。
 
-## Capabilities
+## 功能
 
-- Get session and track information
-- Create and modify MIDI and audio tracks
-- Create, edit, and trigger clips
-- Control playback
-- Load instruments and effects from Ableton's browser
-- Add notes to MIDI clips
-- Change tempo and other session parameters
+- 获取会话和音轨信息
+- 创建和修改 MIDI 和音频音轨
+- 创建、编辑和触发片段
+- 控制播放
+- 从 Ableton 浏览器加载乐器和效果
+- 向 MIDI 片段添加音符
+- 更改速度和其他会话参数
 
-## Example Commands
+## 示例命令
 
-Here are some examples of what you can ask Claude to do:
+以下是您可以要求 Claude 执行的一些示例：
 
-- "Create an 80s synthwave track" [Demo](https://youtu.be/VH9g66e42XA)
-- "Create a Metro Boomin style hip-hop beat"
-- "Create a new MIDI track with a synth bass instrument"
-- "Add reverb to my drums"
-- "Create a 4-bar MIDI clip with a simple melody"
-- "Get information about the current Ableton session"
-- "Load a 808 drum rack into the selected track"
-- "Add a jazz chord progression to the clip in track 1"
-- "Set the tempo to 120 BPM"
-- "Play the clip in track 2"
+- “创建一首 80 年代合成波音轨” [演示](https://youtu.be/VH9g66e42XA)
+- “创建 Metro Boomin 风格的嘻哈节拍”
+- “创建一个带有合成贝斯乐器的 MIDI 音轨”
+- “为我的鼓添加混响”
+- “创建一个包含简单旋律的 4 小节 MIDI 片段”
+- “获取当前 Ableton 会话的信息”
+- “将 808 鼓架加载到选定音轨”
+- “在音轨 1 的片段中添加爵士和弦进程”
+- “将速度设置为 120 BPM”
+- “播放音轨 2 中的片段”
 
+## 故障排除
 
-## Troubleshooting
+- **连接问题**：确保已加载 Ableton 远程脚本，并且在 Claude 上配置了 MCP 服务器
+- **超时错误**：尝试简化请求或将其分解为更小的步骤
+- **尝试过关闭再打开吗？**：如果仍有连接错误，尝试重启 Claude 和 Ableton Live
 
-- **Connection issues**: Make sure the Ableton Remote Script is loaded, and the MCP server is configured on Claude
-- **Timeout errors**: Try simplifying your requests or breaking them into smaller steps
-- **Have you tried turning it off and on again?**: If you're still having connection errors, try restarting both Claude and Ableton Live
+## 技术细节
 
-## Technical Details
+### 通信协议
 
-### Communication Protocol
+系统通过 TCP 套接字使用基于 JSON 的简单协议：
 
-The system uses a simple JSON-based protocol over TCP sockets:
+- 命令作为 JSON 对象发送，包含 `type` 和可选的 `params`
+- 响应为 JSON 对象，包含 `status` 和 `result` 或 `message`
 
-- Commands are sent as JSON objects with a `type` and optional `params`
-- Responses are JSON objects with a `status` and `result` or `message`
+### 限制与安全注意事项
 
-### Limitations & Security Considerations
+- 创建复杂的音乐编排可能需要分解为较小的步骤
+- 该工具设计为与 Ableton 的默认设备和浏览器项目配合使用
+- 在进行广泛实验之前始终保存您的工作
 
-- Creating complex musical arrangements might need to be broken down into smaller steps
-- The tool is designed to work with Ableton's default devices and browser items
-- Always save your work before extensive experimentation
+## 贡献
 
-## Contributing
+欢迎贡献！请随时提交拉取请求。
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## 免责声明
 
-## Disclaimer
-
-This is a third-party integration and not made by Ableton.
+这是第三方集成，非 Ableton 官方制作。
